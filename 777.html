@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Закон Кулона</title>
+    <script type="text/javascript" src="https://me.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=8kqXPAJs1P8-hjNHJ465hv-L4HqwBOujVnWcnQzzTBOl93BqZcrkeE8U2BDSP8FY16u_eRfz7gHnOR9L9_7wuoMIOKSXsQDrqOmK4iRlPsBC3ZtAFMudOpJUaLYth-oxvyIRcwKsiA-gK7VWF0qeUZq9XOX9UJTiTjUHJ-qpaK0eDGdedyEZ7DWrIGbsq9rG6mtyZZqm1DM095JyKtxVTmZqa-g4f8kb8m0mw-AqEanN8p8wDyUSZCzR55om428vfPp2RfZCAuQT37NF7XXU4tg39-HRreBJsmo670MTd8PHPZz5SU8LoR9-sGgLsUMv5nueagBfR-eHtRbnAsYtGNhe8aisWP0MSoSW1CI7_hVf3ForOHCS0HWV-inYLljiq19A3RyAxKzN0KRfULAOrK6J4FAQOuf_LIhtrc1wcMGTa4yNXJ-UIkcIOzB0L5ZKou-prgylfTd6hyxxiq60fEwLER_Y7c7ypMOC8gTxKskJxbiDAQtx9-PSr1opdKDWQ2gwt7mrjy_3YQEWyH0N-5TNL4FdsG8uof6hd2Xpsb4yxNtiDVRgLbcbvqNeHNd9YCt47NjzehF7cN0QE3sXaB2Elt4d34l-4C74b5z9vdLpj3ePS4j1wZApCOFOhaQiqB1YSV1yTWcAKEf5LXInOfxRVdwWTL7qGq2cwvKbVtFM5DO-_E2UIqpA3e2Nzg90IDGE-5aFOhwseJpT0ej1sVRChrYb3VY4ytFEEDACU_dL5-HlM0oz54-_QTY_T9lPPiZzIWYP2b3kEFpWiWrFd-WzlsvhGFGFhuoGkSeWKjc0El-emwSJxG0MYtiea-6BnAvDnRrT1vZQIQvJ03a8C-XmNg2fs0gqlzGxfRQkDyc" charset="UTF-8"></script><style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+        #answer {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Расчет силы притяжения по закону Кулона</h2>
+        
+        <label for="input_q1">Первый заряд (q₁), Кл:</label>
+        <input type="number" id="input_q1" step="any" placeholder="Введите значение">
+        
+        <label for="input_q2">Второй заряд (q₂), Кл:</label>
+        <input type="number" id="input_q2" step="any" placeholder="Введите значение">
+        
+        <label for="input_r">Расстояние (r), м:</label>
+        <input type="number" id="input_r" step="any" placeholder="Введите значение">
+        
+        <button onclick="CalculateForce()">Вычислить</button>
+        <button onclick="DeleteCookies()">Удалить куки</button>
+        
+        <div id="answer"></div>
+    </div>
+
+    <script>
+        
+        function CalculateForce() {
+            const q1 = parseFloat(document.getElementById('input_q1').value);
+            const q2 = parseFloat(document.getElementById('input_q2').value);
+            const r = parseFloat(document.getElementById('input_r').value);
+            
+            if (isNaN(q1) || isNaN(q2) || isNaN(r)) {
+                alert('Введите все числовые значения');
+                return;
+            }
+            
+            if (r === 0) {
+                alert('Расстояние не может быть равно нулю');
+                return;
+            }
+
+            
+            const k = 9e9; // 9 × 10^9 Н·м²/Кл²
+            const F = k * Math.abs(q1 * q2) / (r * r);
+            
+
+            document.getElementById('answer').innerHTML = "Сила притяжения: " + F + " Н";
+            
+            setCookie('q1', q1, 365);
+            setCookie('q2', q2, 365);
+            setCookie('r', r, 365);
+        }
+
+
+        function DeleteCookies() {
+            deleteCookie('q1');
+            deleteCookie('q2');
+            deleteCookie('r');
+            document.getElementById('answer').innerHTML = '';
+            document.getElementById('input_q1').value = '';
+            document.getElementById('input_q2').value = '';
+            document.getElementById('input_r').value = '';
+        }
+
+
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        }
+
+
+        window.onload = function() {
+            const saved_q1 = getCookie('q1');
+            const saved_q2 = getCookie('q2');
+            const saved_r = getCookie('r');
+            
+            if (saved_q1) document.getElementById('input_q1').value = saved_q1;
+            if (saved_q2) document.getElementById('input_q2').value = saved_q2;
+            if (saved_r) document.getElementById('input_r').value = saved_r;
+        };
+    </script>
+</body>
+</html>
